@@ -8,49 +8,52 @@ namespace ChequePorExtenso.ConsoleApp
 {
     public class Conversor
     {
-        Dictionary<string, string> CasaSingular;
-        Dictionary<string, string> CasaDezena;
-        Dictionary<string, string> CasaCentena;
+        Dictionary<char, string> CasaSingular;
+        Dictionary<char, string> CasaDezena;
+        Dictionary<char, string> CasaCentena;
 
         public Conversor()
         {
-            CasaSingular = new Dictionary<string, string>
+            CasaSingular = new Dictionary<char, string>
             {
-                {"1", "um"},
-                {"2", "dois"},
-                {"3", "três"},
-                {"4", "quatro"},
-                {"5", "cinco"},
-                {"6", "seis"},
-                {"7", "sete"},
-                {"8", "oito"},
-                {"9", "nove"}
+                {'0', ""},
+                {'1', "um"},
+                {'2', "dois"},
+                {'3', "três"},
+                {'4', "quatro"},
+                {'5', "cinco"},
+                {'6', "seis"},
+                {'7', "sete"},
+                {'8', "oito"},
+                {'9', "nove"}
             };
 
-            CasaDezena = new Dictionary<string, string>
+            CasaDezena = new Dictionary<char, string>
             {
-                {"1", "dez"},
-                {"2", "vinte"},
-                {"3", "trinta"},
-                {"4", "quarenta"},
-                {"5", "cinquenta"},
-                {"6", "sessenta"},
-                {"7", "setenta"},
-                {"8", "oitenta"},
-                {"9", "noventa"}
+                {'0', ""},
+                {'1', "dez"},
+                {'2', "vinte"},
+                {'3', "trinta"},
+                {'4', "quarenta"},
+                {'5', "cinquenta"},
+                {'6', "sessenta"},
+                {'7', "setenta"},
+                {'8', "oitenta"},
+                {'9', "noventa"}
             };
 
-            CasaCentena = new Dictionary<string, string>
+            CasaCentena = new Dictionary<char, string>
             {
-                {"1", "cento"},
-                {"2", "duzentos"},
-                {"3", "trezentos"},
-                {"4", "quatrocentos"},
-                {"5", "quinhentos"},
-                {"6", "seiscentos"},
-                {"7", "setecentos"},
-                {"8", "oitocentos"},
-                {"9", "novecentos"}
+                {'0', ""},
+                {'1', "cento"},
+                {'2', "duzentos"},
+                {'3', "trezentos"},
+                {'4', "quatrocentos"},
+                {'5', "quinhentos"},
+                {'6', "seiscentos"},
+                {'7', "setecentos"},
+                {'8', "oitocentos"},
+                {'9', "novecentos"}
             };
         }
 
@@ -59,38 +62,30 @@ namespace ChequePorExtenso.ConsoleApp
             string input = Console.ReadLine();
 
             var stringsSeparadas = input.Split('.').ToList();
-            var numeroConvertido = TransformarEmExtenso(stringsSeparadas);
+            var classesEmExtenso = TransformarClassesEmExtenso(stringsSeparadas);
 
-            var frase = string.Join("", numeroConvertido);
-
-            Console.WriteLine(frase);
+            Console.WriteLine(string.Join(' ', classesEmExtenso));
         }
 
-        private List<string> TransformarEmExtenso(List<string> classesNumericas)
+        private List<Classe> TransformarClassesEmExtenso(List<string> classesNumericas)
         {
-            string espaco = " "; //34.456
-            string e = "e ";
-
-            List<string> numerosConvertidos = new();
-
-            var dictionaries = new[] { CasaSingular, CasaDezena, CasaCentena };
-
-            classesNumericas.Reverse();
+            List<Classe> classes = new();
 
             foreach (var classe in classesNumericas)
             {
-                var classeReversa = classe.Reverse().ToList(); //43.654
+                var reverso = classe.Reverse().ToArray();
 
-                for (int i = 0; i < classe.Length; i++)
+                var classeExtenso = new Classe
                 {
-                    var numero = dictionaries[i][$"{classeReversa[i]}"];
-                    numerosConvertidos.Add(numero);
-                }
+                    Unidade = CasaSingular[reverso[0]],
+                    Dezena = classe.Length > 1 ? CasaDezena[reverso[1]] : null,
+                    Centena = classe.Length > 2 ? CasaCentena[reverso[2]] : null
+                };
+
+                classes.Add(classeExtenso);
             }
 
-            numerosConvertidos.Reverse();
-
-            return numerosConvertidos;
+            return classes;
         }
     }
 }

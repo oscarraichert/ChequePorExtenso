@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ChequePorExtenso.ConsoleApp
+{
+    public class Classe
+    {
+        public string Unidade;
+        public string Dezena;
+        public string Centena;
+
+        public override string ToString()
+        {
+            return $"{Centena} e {Dezena} e {Unidade}";
+        }
+    }
+}
