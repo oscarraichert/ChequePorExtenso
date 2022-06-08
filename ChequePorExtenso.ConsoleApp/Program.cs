@@ -4,11 +4,13 @@ namespace ChequePorExtenso.ConsoleApp
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Conversor conversor = new Conversor();
+            Conversor conversor = new();
 
-            conversor.ConverterNumero();
+            var input = Console.ReadLine();
+
+            Console.WriteLine(conversor.ConverterNumero(input));
         }
     }
 }

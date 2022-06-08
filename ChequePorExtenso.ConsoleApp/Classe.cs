@@ -14,6 +14,21 @@ namespace ChequePorExtenso.ConsoleApp
 
         public override string ToString()
         {
+            return VerificarCasas();
+        }
+
+        private string VerificarCasas()
+        {
+            if (Centena == null)
+            {
+                return $"{Dezena} e {Unidade}";
+            }
+
+            if (Dezena == null)
+            {
+                return $"{Unidade}";
+            }
+
             return $"{Centena} e {Dezena} e {Unidade}";
         }
     }

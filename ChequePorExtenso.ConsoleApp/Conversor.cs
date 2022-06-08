@@ -8,9 +8,10 @@ namespace ChequePorExtenso.ConsoleApp
 {
     public class Conversor
     {
-        Dictionary<char, string> CasaSingular;
-        Dictionary<char, string> CasaDezena;
-        Dictionary<char, string> CasaCentena;
+        readonly Dictionary<char, string> CasaSingular;
+        readonly Dictionary<char, string> CasaDezena;
+        readonly Dictionary<char, string> CasaCentena;
+        readonly List<string> NomeClasse;
 
         public Conversor()
         {
@@ -55,19 +56,50 @@ namespace ChequePorExtenso.ConsoleApp
                 {'8', "oitocentos"},
                 {'9', "novecentos"}
             };
+
+            NomeClasse = new List<string>
+            {
+                {""},
+                {"mil"},
+                {"milhões"},
+                {"bilhões"},
+                {"trilhões"},
+                {"quatrilhão"},
+                {"quintilhão"},
+                {"sextilhão"},
+                {"septilhão"},
+                {"octilhão"}
+            };
         }
 
-        public void ConverterNumero()
+        public string ConverterNumero(string input)
         {
-            string input = Console.ReadLine();
-
             var stringsSeparadas = input.Split('.').ToList();
-            var classesEmExtenso = TransformarClassesEmExtenso(stringsSeparadas);
+            var classesEmExtenso = CriarClassesETransformarEmString(stringsSeparadas);
+            var x = NomeandoClasses(classesEmExtenso);
 
-            Console.WriteLine(string.Join(' ', classesEmExtenso));
+            return string.Join(' ', x).Trim();
         }
 
-        private List<Classe> TransformarClassesEmExtenso(List<string> classesNumericas)
+        private List<string> NomeandoClasses(List<Classe> classesEmExtenso) 
+        {
+            List<string> classesNomeadas = new();
+
+            classesEmExtenso.Reverse();
+
+            var numClasses = classesEmExtenso.Count;
+
+            for (int i = 0; i < numClasses; i++)
+            {
+                classesNomeadas.Add($"{classesEmExtenso[i]} {NomeClasse[i]}");
+            }
+
+            classesNomeadas.Reverse();
+
+            return classesNomeadas;
+        }
+
+        private List<Classe> CriarClassesETransformarEmString(List<string> classesNumericas)
         {
             List<Classe> classes = new();
 
